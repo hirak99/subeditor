@@ -1,6 +1,8 @@
 package arnab.subedit;
 
 import java.awt.Dimension;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.text.ParseException;
 import java.util.Collections;
 import java.util.Comparator;
@@ -30,16 +32,28 @@ class Adjustor {
 		ftf.setValue(Utils.toTimeString(time));
 		ftf.setMaximumSize(new Dimension(80,20));
 		panel.add(ftf);
-//		ftf.addFocusListener(new FocusListener() {
-//			public void focusGained(FocusEvent e) {	}
-//			public void focusLost(FocusEvent e) {
-//				panel.firePropertyChange("valueChanged", false, true);
-//			}
-//		});
+		ftf.addFocusListener(new FocusListener() {
+			public void focusGained(FocusEvent e) {	
+				fireFocusEvent(true);
+                        }
+			public void focusLost(FocusEvent e) {
+				fireFocusEvent(false);
+			}
+		});
 	}
+        private Vector<FocusListener> FocusListeners=new Vector<FocusListener>();
+        public void addFocusListener(FocusListener l) {
+            FocusListeners.add(l);
+        }
+        private void fireFocusEvent(boolean focussed) {
+            for (FocusListener l : FocusListeners) {
+                if (focussed) l.focusGained(null);
+                else l.focusLost(null);
+            }
+        }
 	private JPanel panel;
 	private JFormattedTextField ftf;
-	public JFormattedTextField getTextBox() {return ftf;}
+//	public JFormattedTextField getTextBox() {return ftf;}
 	public JPanel getPanel() {
 		return panel;
 	}

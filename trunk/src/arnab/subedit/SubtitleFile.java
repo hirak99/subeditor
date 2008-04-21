@@ -325,11 +325,11 @@ public class SubtitleFile {
             }
         }
         SubtitleEntry entry = entries.get(subtitleLine);
-        Adjustor newAdjustor = new Adjustor(subtitleLine, entry.line, modifiedTime(subtitleLine, true));
-        newAdjustor.getTextBox().addFocusListener(new FocusListener() {
+        final Adjustor newAdjustor = new Adjustor(subtitleLine, entry.line, modifiedTime(subtitleLine, true));
+        newAdjustor.addFocusListener(new FocusListener() {
 
             public void focusGained(FocusEvent e) {
-                adjustorPanel.firePropertyChange("selectionChange", false, true);
+                adjustorPanel.firePropertyChange("selectionChange", 0, newAdjustor.getLineNum());
             }
 
             public void focusLost(FocusEvent e) {
