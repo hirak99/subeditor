@@ -62,7 +62,10 @@ class Utils {
  */
 public class MainComponent extends JPanel {
 
-    SubtitleFile subtitleFile = new SubtitleFile();
+    private SubtitleFile subtitleFile = new SubtitleFile();
+    public SubtitleFile getSubtitleFile() {
+        return subtitleFile;
+    }
 
     public void openFile(String fileName) {
         subtitleFile.loadFile(fileName);
@@ -134,7 +137,7 @@ public class MainComponent extends JPanel {
                 new PropertyChangeListener() {
 
                     public void propertyChange(PropertyChangeEvent evt) {
-                        Adjustors adjustors = subtitleFile.getAdjustors();
+                        Adjustors adjustors = getSubtitleFile().getAdjustors();
                         int newRow = ((Integer) evt.getNewValue()).intValue();
                         tableLines.getSelectionModel().setSelectionInterval(newRow, newRow);
                         Rectangle rect = tableLines.getCellRect(newRow, 0, true);

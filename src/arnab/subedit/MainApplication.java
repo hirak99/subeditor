@@ -21,17 +21,17 @@ public class MainApplication {
 		if (fileChooser.showOpenDialog(mainComponent)==JFileChooser.APPROVE_OPTION) {
 			String fileName=fileChooser.getSelectedFile().getPath();
 			lastDirectory=fileName.substring(0,fileName.lastIndexOf(File.separatorChar));
-			mainComponent.subtitleFile.loadFile(fileName);
+			mainComponent.getSubtitleFile().loadFile(fileName);
 		}
 	}
 	private void showUpdateDialog() {
         fileChooser.setCurrentDirectory(new File(lastDirectory==null?System.getProperty("user.dir"):lastDirectory));
-        fileChooser.setSelectedFile(new File(mainComponent.subtitleFile.getFileName()));
+        fileChooser.setSelectedFile(new File(mainComponent.getSubtitleFile().getFileName()));
 		if (fileChooser.showSaveDialog(mainComponent)==JFileChooser.APPROVE_OPTION) {
 			String fileName=fileChooser.getSelectedFile().getPath();
 			if (fileName.indexOf('.')==-1) fileName+=".srt"; 
 			lastDirectory=fileName.substring(0,fileName.lastIndexOf(File.separatorChar));
-			mainComponent.subtitleFile.saveFile(fileName);
+			mainComponent.getSubtitleFile().saveFile(fileName);
 		}
 	}
 	private JMenuBar mainMenu() {
