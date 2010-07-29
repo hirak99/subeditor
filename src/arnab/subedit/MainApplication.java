@@ -22,6 +22,7 @@ public class MainApplication {
 			String fileName=fileChooser.getSelectedFile().getPath();
 			lastDirectory=fileName.substring(0,fileName.lastIndexOf(File.separatorChar));
 			mainComponent.getSubtitleFile().loadFile(fileName);
+                        mainComponent.invalidate();
 		}
 	}
 	private void showUpdateDialog() {
