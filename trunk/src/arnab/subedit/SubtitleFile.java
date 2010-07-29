@@ -164,13 +164,15 @@ public class SubtitleFile {
             adjustors.remove(0);
         }
         adjustorPanel.validate();
+        boolean result;
+        if (fileName.toLowerCase().endsWith(".sub")) {
+            result = loadSub(fileName);
+        } else {
+            result = loadSrt(fileName);
+        }
         subtitleTableModel.fireTableDataChanged();
         adjustorPanel.firePropertyChange("needsLayout", false, true);
-        if (fileName.toLowerCase().endsWith(".sub")) {
-            return loadSub(fileName);
-        } else {
-            return loadSrt(fileName);
-        }
+        return result;
     }
     /**
      * Function to facilitate extraction of numbers from strings of the
@@ -198,9 +200,10 @@ public class SubtitleFile {
     }
 
     private boolean loadSub(String fileName) {
-        //final double fps=23.976;
-        final double fps = 25;
         RandomAccessFile raf;
+        //double fps = 23.976;
+        double fps = JSubInputOptions.GetFps();
+        //JOptionPane.showMessageDialog(null, fps);
         try {
             curFileName = fileName.substring(0, fileName.length() - 4) + ".srt";
             raf = new RandomAccessFile(fileName, "r");
@@ -212,7 +215,7 @@ public class SubtitleFile {
                 long num2 = extractNumResult;
                 long time1 = (long) (num1 * 1000 / fps);
                 long time2 = (long) (num2 * 1000 / fps);
-                while (line.charAt(line.length() - 1) == '|') {
+                while (line.length()>0 && line.charAt(line.length() - 1) == '|') {
                     line = line.substring(0, line.length() - 1);
                 }
                 entries.add(new SubtitleEntry(line.replace('|', '\n'), time1, time2));
@@ -220,6 +223,7 @@ public class SubtitleFile {
             raf.close();
             return true;
         } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error: "+e.getMessage(), "SubEditor", JOptionPane.ERROR_MESSAGE);
             return false;
         }
     }
