@@ -231,12 +231,14 @@ public class SubtitleFile {
     private boolean loadSrt(String fileName) {
         RandomAccessFile raf;
         LoadState state = LoadState.NUMBER;
+        int linesRead = 0;
         try {
             curFileName = fileName;
             raf = new RandomAccessFile(fileName, "r");
             String line, title = null;
             long time1 = 0, time2 = 0;
             while ((line = raf.readLine()) != null) {
+                ++linesRead;
                 if (state == LoadState.NUMBER) {
                     if (line.trim().length() > 0) {
                         title = "";
@@ -250,7 +252,7 @@ public class SubtitleFile {
                 } else if (state == LoadState.TITLE) {
                     if (line.trim().length() == 0) {
                         // Do the storing here
-                        if (title.length() > 0) {
+                        if (title.length() > 0 && title.length()>0) {
                             entries.add(new SubtitleEntry(title, time1, time2));
                         }
                         state = LoadState.NUMBER;
@@ -276,7 +278,7 @@ public class SubtitleFile {
             int errorLocation = entries.size();
             entries.clear();
             curFileName = null;
-            JOptionPane.showMessageDialog(null, "Parsing error at entry " + errorLocation + "\r\n[ " + e.toString() + e.getMessage() + " ]");
+            JOptionPane.showMessageDialog(null, "Parsing error at line " + linesRead + "\r\n[ " + e.toString() + e.getMessage() + " ]");
             return false;
         }
     }
