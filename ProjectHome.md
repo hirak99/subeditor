@@ -1,0 +1,1 @@
+This software aims at automating the process of re-synchronizing subtitle files (.srt and .sub) for movies.
